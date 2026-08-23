@@ -1,14 +1,16 @@
-import { isPlainObject } from './is_plain_object.mts';
 import { SkipRename } from './constants.mts';
+import { isPrimitive, traverse } from './traverse.mts';
 
 export type DeepRenameValue = string | number | null | boolean | undefined;
 export type DeepRenameValueFn = (val: DeepRenameValue) => DeepRenameValue | symbol;
 
 export function renameValues<T, U = T>(obj: T, renameValueFn: DeepRenameValueFn): U {
-  if (!isPlainObject(obj)) {
-    const renameValResult = renameValueFn(obj as DeepRenameValue);
-    return (renameValResult === SkipRename ? obj : renameValResult) as U;
-  }
-
-  return Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, renameValues(value, renameValueFn)])) as U;
+  return traverse(obj, {
+    key: (key) => key,
+    leaf: (value) => {
+      if (!isPrimitive(value)) return value;
+      const result = renameValueFn(value as DeepRenameValue);
+      return result === SkipRename ? value : result;
+    },
+  }) as U;
 }

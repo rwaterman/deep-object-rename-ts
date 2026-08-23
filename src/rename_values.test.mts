@@ -93,3 +93,38 @@ describe(renameValues.name, () => {
     assert.deepEqual(obj, fixture());
   });
 });
+
+describe('renameValues edge cases', () => {
+  it('only passes primitives to the callback; Date, Map and arrays are traversed or passed through', () => {
+    const seen: DeepRenameValue[] = [];
+    const d = new Date(0);
+    const out = renameValues({ d, m: new Map(), arr: [1, 'x'], n: 2 }, (val) => {
+      seen.push(val);
+      return SkipRename;
+    });
+    assert.deepEqual(seen, [1, 'x', 2]);
+    assert.equal((out as { d: Date }).d, d);
+  });
+
+  it('renames primitives inside arrays', () => {
+    assert.deepEqual(
+      renameValues({ a: ['123', ['123']] }, (val) => (val === '123' ? 123 : SkipRename)),
+      { a: [123, [123]] },
+    );
+  });
+
+  it('renames a top-level primitive', () => {
+    assert.equal(
+      renameValues('123', (val) => (val === '123' ? 123 : SkipRename)),
+      123,
+    );
+  });
+
+  it('preserves circular references', () => {
+    const input: Record<string, unknown> = { a: 1 };
+    input.self = input;
+    const out = renameValues<typeof input, Record<string, unknown>>(input, (val) => (val === 1 ? 2 : SkipRename));
+    assert.equal(out.a, 2);
+    assert.equal(out.self, out);
+  });
+});
