@@ -1,38 +1,43 @@
-# Description
-A lightweight helper library with no dependencies to deeply rename either (1) object keys or (2) object values.
+# deep-object-rename
 
-# Usage
-This library can be used in either TypeScript or Javascript projects.
+Zero-dependency helper to deeply rename either (1) object keys or (2) object values.
+
+ESM only. Requires Node.js 24+.
+
+```sh
+npm install deep-object-rename
+```
 
 ## renameKeys
-* Create a function that tests whether the key should be renamed, and if so, to what. If the key should not be renamed, return the `SkipRename` symbol.
-* The `DeepRenameKeyFn` type and `SkipRename` symbol can imported from this library.
-* Example:
 
-```typescript
+Pass a function that returns the new key, or the `SkipRename` symbol to leave it as is.
+
+```ts
+import { renameKeys, SkipRename } from 'deep-object-rename';
+
 const obj = { x: { y: { z: 123 } } };
 
-function renameKeyFn(key: string): string | symbol  {
-  return key && key.startsWith('y') ? 'y_changed' : SkipRename;
-}
-
-const changed = renameKeys(obj, renameKeyFn);
-// `changed` now equals `{x: { y_changed: { z: 123 } } }`
+const changed = renameKeys(obj, (key) => (key.startsWith('y') ? 'y_changed' : SkipRename));
+// { x: { y_changed: { z: 123 } } }
 ```
 
 ## renameValues
-* Create a function that tests whether the value should be renamed, and if so, to what. If the value should not be renamed, return the `SkipRename` symbol.
-* The `DeepRenameValueFn` type and `SkipRename` symbol can imported from this library.
-* Values that can be renamed are supported for primitive types only--see the `DeepRenameValue` type for more information.
-* Example:
 
-```typescript
+Pass a function that returns the new value, or the `SkipRename` symbol to leave it as is. Only primitive values (`string | number | boolean | null | undefined`, see `DeepRenameValue`) are passed to the callback; nested objects are traversed, arrays are returned untouched.
+
+```ts
+import { renameValues, SkipRename, type DeepRenameValue } from 'deep-object-rename';
+
 const obj = { x: { y: { y: 123, z: '123' }, x2: '123' } };
 
-function renameValueFn(val: DeepRenameValue): DeepRenameValue | symbol {
-  return val === '123' ? 123 : SkipRename;
-}
+const changed = renameValues(obj, (val: DeepRenameValue) => (val === '123' ? 123 : SkipRename));
+// { x: { y: { y: 123, z: 123 }, x2: 123 } }
+```
 
-const changed = renameValues(obj, renameValueFn);
-// `changed` now equals `{ x: { y: { y: 123, z: 123 } }, x2: 123 };`
+## Development
+
+```sh
+npm test        # node:test
+npm run lint    # eslint
+npm run build   # tsc -> lib/*.mjs
 ```
