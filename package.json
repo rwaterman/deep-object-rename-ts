@@ -22,12 +22,12 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.mts\" \"*.{json,md,mjs}\"",
-    "lint": "eslint src",
+    "lint": "oxlint --type-aware --deny-warnings src",
     "postversion": "git push && git push --tags",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
-    "test": "node --test \"src/**/*.test.mts\""
+    "test": "vitest run"
   },
   "repository": {
     "type": "git",
@@ -41,11 +41,11 @@
   "author": "Rick Waterman",
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@types/node": "^26.2.0",
-    "eslint": "^10.9.0",
+    "oxlint": "^1.79.0",
+    "oxlint-tsgolint": "^7.0.2001",
     "prettier": "^3.9.6",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.67.0"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
   }
 }
