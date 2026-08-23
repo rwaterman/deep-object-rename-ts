@@ -1,4 +1,4 @@
-import { beforeEach, describe, it } from 'node:test';
+import { beforeEach, describe, it } from 'vitest';
 import assert from 'node:assert/strict';
 import { type DeepRenameValue, renameValues } from './rename_values.mts';
 import { SkipRename } from './constants.mts';
