@@ -1,6 +1,6 @@
 {
   "name": "deep-object-rename",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A Javascript library for deep object renaming by key or value, written in TypeScript",
   "type": "module",
   "exports": {
