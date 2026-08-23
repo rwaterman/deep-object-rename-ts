@@ -10,7 +10,7 @@ npm install @rwaterman/deep-object-rename
 
 ## renameKeys
 
-Pass a function that returns the new key, or the `SkipRename` symbol to leave it as is.
+Pass a function that returns the new key, or the `SkipRename` symbol to leave it as is. Plain objects and arrays are traversed; anything else (`Date`, `Map`, `Set`, `Buffer`, class instances, ...) is passed through untouched. Circular and shared references are preserved.
 
 ```ts
 import { renameKeys, SkipRename } from '@rwaterman/deep-object-rename';
@@ -23,7 +23,7 @@ const changed = renameKeys(obj, (key) => (key.startsWith('y') ? 'y_changed' : Sk
 
 ## renameValues
 
-Pass a function that returns the new value, or the `SkipRename` symbol to leave it as is. Only primitive values (`string | number | boolean | null | undefined`, see `DeepRenameValue`) are passed to the callback; nested objects are traversed, arrays are returned untouched.
+Pass a function that returns the new value, or the `SkipRename` symbol to leave it as is. Only primitive values (`string | number | boolean | null | undefined`, see `DeepRenameValue`) are passed to the callback; plain objects and arrays are traversed, anything else (`Date`, `Map`, `Set`, class instances, ...) is passed through untouched. Circular and shared references are preserved.
 
 ```ts
 import { renameValues, SkipRename, type DeepRenameValue } from '@rwaterman/deep-object-rename';
@@ -37,7 +37,7 @@ const changed = renameValues(obj, (val: DeepRenameValue) => (val === '123' ? 123
 ## Development
 
 ```sh
-npm test        # node:test
-npm run lint    # eslint
+npm test        # vitest
+npm run lint    # oxlint (type-aware)
 npm run build   # tsc -> lib/*.mjs
 ```
