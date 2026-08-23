@@ -1,6 +1,9 @@
 {
-  "name": "deep-object-rename",
-  "version": "2.0.0",
+  "name": "@rwaterman/deep-object-rename",
+  "version": "2.2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "A Javascript library for deep object renaming by key or value, written in TypeScript",
   "type": "module",
   "exports": {
@@ -28,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rwaterman/deep-object-rename.git"
+    "url": "git+https://github.com/rwaterman/deep-object-rename-ts.git"
   },
   "keywords": [
     "TypeScript",
