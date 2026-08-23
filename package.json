@@ -28,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rwaterman/deep-object-rename.git"
+    "url": "git+https://github.com/rwaterman/deep-object-rename-ts.git"
   },
   "keywords": [
     "TypeScript",
