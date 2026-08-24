@@ -37,6 +37,7 @@ const changed = renameValues(obj, (val: DeepRenameValue) => (val === '123' ? 123
 ## Development
 
 ```sh
+pre-commit install   # gitleaks secret scan on commit
 npm test        # vitest
 npm run lint    # oxlint (type-aware)
 npm run build   # tsc -> lib/*.mjs
